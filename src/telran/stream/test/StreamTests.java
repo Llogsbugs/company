@@ -69,11 +69,20 @@ class StreamTests {
 				e.getKey(), e.getValue()));
 	}
 	@Test
+	@Disabled
 	void stringStream() {
 		String string = "Hello";
-		//output: h,e,l,l,o
+		//output: H,e,l,l,o
 		//string.chars().forEach(c -> System.out.printf("%c,", c));
 		string.chars().mapToObj(c -> "" + (char)c) //conversion to Stream<String>
+		.forEach(s -> System.out.print(s + ","));
+	}
+	@Test
+	void splittingStringArray() {
+		String [] strings = {"Hello", "World"};
+		//output: H,e,l,l,o,W,o,r,l,d
+		Arrays.stream(strings).flatMapToInt(str -> str.chars())
+		.mapToObj(c -> "" + (char)c) //conversion to Stream<String>
 		.forEach(s -> System.out.print(s + ","));
 	}
 	
