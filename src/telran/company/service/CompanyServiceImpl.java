@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import telran.company.dto.DepartmentAvgSalary;
 import telran.company.dto.Employee;
 import telran.company.dto.SalaryIntervalDistribution;
-
+import java.io.*;
 public class CompanyServiceImpl implements CompanyService {
 	HashMap<Long, Employee> employeesMap = new HashMap<>();
 	/***********************************************************/
@@ -189,8 +189,14 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Override
 	public List<SalaryIntervalDistribution> getSalaryDistribution(int interval) {
-		// TODO Auto-generated method stub O[N]
-		return null;
+		//key of map is interval number, value is amount of employees falling into that interval
+		Map<Integer, Long> map = employeesMap.values().stream()
+				.collect(Collectors.groupingBy(e -> e.salary() / interval,
+						Collectors.counting()));
+		return map.entrySet().stream().sorted((e1, e2) -> Integer.compare(e1.getKey(),
+				e2.getKey()))
+				.map(e -> new SalaryIntervalDistribution(e.getKey() * interval,
+						e.getKey() * interval + interval, e.getValue())).toList();
 	}
 
 	@Override
@@ -213,13 +219,28 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Override
 	public void save(String filePath) {
-		// TODO Auto-generated method stub O[N]
+		try(ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(filePath))) {
+			output.writeObject(getAllEmployees());
+		} catch (Exception e) {
+			System.out.println(e.toString());
+			throw new RuntimeException(e);
+		}
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void restore(String filePath) {
-		// TODO Auto-generated method stub O[N]
+		List<Employee> employees = null;
+		try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(filePath))){
+			employees = (List<Employee>) input.readObject();
+			employees.forEach(this::hireEmployee);
+		} catch (FileNotFoundException e) {
+			System.out.println(filePath + " File with data doesn't exist");
+		} catch (Exception e) {
+			System.out.println(e);
+			throw new RuntimeException(e);
+		}
 
 	}
 
