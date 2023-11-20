@@ -28,8 +28,12 @@ public class MyDictionary {
 				.stream().toArray(String[]::new);
 	}
 	private String getPrefixLimit(String prefix) {
+		//extract the last character
 		char lastChar = prefix.charAt(prefix.length() - 1);
+		//incrementing last character
 		char limitChar = (char) (lastChar + 1);
+		//extracting substring of prefix with no last character
+		//and concatenation with incremented character
 		return prefix.substring(0, prefix.length() - 1) + limitChar;
 
 	}
