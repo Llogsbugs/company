@@ -1,12 +1,12 @@
 package telran.interview;
 
-import java.util.List;
+import java.util.*;
 
 public class MyDictionary {
-	//TODO
+	private TreeSet<String> set;
+	
 	public MyDictionary(List<String> words) {
-		//TODO
-		//Filling words of the dictionary from the given list
+		set = new TreeSet<>(words);
 	}
 	/**
 	 * adds word into dictionary
@@ -15,8 +15,8 @@ public class MyDictionary {
 	 * 
 	 */
 	public boolean addWord(String word) {
-		//TODO
-		return false;
+		
+		return set.add(word);
 	}
 	/**
 	 * looking for the words with a given prefix
@@ -24,6 +24,13 @@ public class MyDictionary {
 	 * @return array of words with the given prefix
 	 */
 	public String [] getWordsByPrefix(String prefix) {
-		return null;
+		return set.subSet(prefix, getPrefixLimit(prefix))
+				.stream().toArray(String[]::new);
+	}
+	private String getPrefixLimit(String prefix) {
+		char lastChar = prefix.charAt(prefix.length() - 1);
+		char limitChar = (char) (lastChar + 1);
+		return prefix.substring(0, prefix.length() - 1) + limitChar;
+
 	}
 }
