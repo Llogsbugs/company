@@ -11,7 +11,7 @@ public class ArithmeticSimpleCalculatorAppl {
 
 	}
 
-	private static Item[] getItems() {
+	public static Item[] getItems() {
 		Item[] items= {
 			new AddNumbers(),
 			of("Subtract numbers", io -> subtractNumbers(io)),
