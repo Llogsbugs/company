@@ -43,7 +43,7 @@ public class CompanyItems {
 				
 				};
 		
-		return null;
+		return items;
 	}
 	private static void saveEmployees(InputOutput io) {
 		
@@ -88,7 +88,7 @@ public class CompanyItems {
 		displayList(io, company.getAllEmployees());
 	}
 	private static void getEmployeesByDepartment(InputOutput io) {
-		String department = io.readOptions("Enter department", "Wrong department", departments);
+		String department = io.readOptions("Enter department " + departments, "Wrong department", departments);
 		displayList(io, company.getEmployeesByDepartment(department));
 	}
 	private static void getEmployee(InputOutput io) {
@@ -110,11 +110,12 @@ public class CompanyItems {
 		String name = io.readPredicate("Enter name", "Wrong name: must be not less than 3 letters begining from capital", str -> checkName(str));
 		
 		int salary = io.readInt("Enter salary value", "Wrong salary", MIN_SALARY, MAX_SALARY);
-		String department= io.readOptions("Enter department", "Wrong department", departments);
+		String department= io.readOptions("Enter department " + departments, "Wrong department", departments);
 		LocalDate birthDate = io.readDate("Enter birthdate", "Wrong birthdate value",
 				getDate(MAX_AGE), getDate(MIN_AGE));
 		Employee empl = new Employee(id, name, salary, department, birthDate);
 		company.hireEmployee(empl );
+		io.writeLine("Employee has been added successfully");
 	}
 	private static boolean checkName(String str) {
 		boolean res = false;
