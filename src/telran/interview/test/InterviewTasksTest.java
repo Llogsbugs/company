@@ -2,8 +2,11 @@ package telran.interview.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static telran.interview.InterviewTasks.*;
+import telran.interview.*;
 
+import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -96,6 +99,7 @@ class InterviewTasksTest {
 		 */
 	}
 	@Test
+	@Disabled
 	void displayArrayShufflingTest() {
 		int [] array = {1,2,3,4,5,6};
 		for (int i = 0; i < 3; i++) {
@@ -109,6 +113,19 @@ class InterviewTasksTest {
 		 * 5, 2, 4, 6, 3, 1
 		 * 3, 5, 4, 1, 2, 6
 		 */
+	}
+	@Test
+	void DateTitlesTest() {
+		List<DateTitle> DateTitles = getListOfDateTitle(List.of(new DateTitle(LocalDate.parse("2017-10-12"),
+				"Developer"),
+				new DateTitle(LocalDate.parse("2020-01-01"), "Team leader"),new DateTitle(LocalDate.parse("2023-08-15"), "Project Manager")),
+				List.of(LocalDate.parse("2015-01-01"),LocalDate.parse("2018-01-01"),LocalDate.parse("2023-01-01")));
+		DateTitle[] expected = {
+			new DateTitle(LocalDate.parse("2015-01-01"), null),
+			new DateTitle(LocalDate.parse("2018-01-01"), "Developer"),
+			new DateTitle(LocalDate.parse("2023-01-01"), "Team leader")
+		};
+		assertArrayEquals(expected, DateTitles.toArray(DateTitle[]::new));
 	}
 	
 

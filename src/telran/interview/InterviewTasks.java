@@ -1,7 +1,9 @@
 package telran.interview;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -155,6 +157,22 @@ public class InterviewTasks {
 		new Random().ints(0, array.length)
 		.distinct().limit(array.length)
 		.forEach(i -> System.out.print(array[i] + " "));
+	}
+	
+	/**
+	 * 
+	 * @param history - list of DateTitle objects, date - LocalDate object,
+	 *  title - title received on the date, for example, date: "2019-03-13", title: "programmer"
+	 *  means that 13/03/2019 there was received title "programmer"
+	 * @param dates - list of dates
+	 * @return  list of DateTitle objects created according to the given history
+	 * where date is a date from the parameter "dates" and title is the title that was
+	 * on the date from the history
+	 */
+	public static List<DateTitle> getListOfDateTitle(List<DateTitle> history,
+			List<LocalDate> dates) {
+		//TODO
+		return null;
 	}
 	
 }
