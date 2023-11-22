@@ -1,6 +1,9 @@
 package telran.view.test;
 import telran.view.*;
 import static telran.view.Item.*;
+
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 public class DatesMenu {
 public static Item getMenu() {
 	Menu menu = new Menu(getItems(), "Dates Operations");
@@ -18,19 +21,24 @@ private static Item[] getItems() {
 }
 
 private static void daysBetweenDates(InputOutput io) {
-	// TODO Auto-generated method stub
-	io.writeLine("TODO for HW #31 ; Enter first date, enter second date,"
-			+ " print number days between two dates");
+	LocalDate date1 = io.readDate("Enter first date in format YYYY-MM-DD", "Wrong date format");
+	LocalDate date2 = io.readDate("Enter second date in format YYYY-MM-DD", "Wrong date format");
+	io.writeLine(String.format("Number of days between %s and %s is %d days", date1, date2,
+			ChronoUnit.DAYS.between(date1, date2)));
 }
 
 private static void dateBefore(InputOutput io) {
-	// TODO Auto-generated method stub
-	io.writeLine("TODO - Enter date, enter number days, print date after the days");
+	LocalDate date = io.readDate("Enter date in format YYYY-MM-DD", "Wrong date format");
+	int days = io.readInt("Enter number of days before the date " + date, "Wrong number of days");
+	io.writeLine(String.format("Date before %d days from date %s is %s", days, date,
+			date.minusDays(days)));
 	
 }
 
 private static void dateAfter(InputOutput io) {
-	// TODO Auto-generated method stub
-	io.writeLine("TODO - Enter date, enter number days, print date before the days");
+	LocalDate date = io.readDate("Enter date in format YYYY-MM-DD", "Wrong date format");
+	int days = io.readInt("Enter number of days after the date " + date, "Wrong number of days");
+	io.writeLine(String.format("Date after %d days from date %s is %s", days, date,
+			date.plusDays(days)));
 }
 }

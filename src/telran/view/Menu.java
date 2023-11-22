@@ -1,7 +1,7 @@
 package telran.view;
 
 public class Menu implements Item {
-   private static final String SYMBOL = "_";
+   private static final String SYMBOL = "*";
 private static final int N_SYMBOLS = 30;
 private Item[] items;
     private String name;
@@ -45,7 +45,7 @@ private Item[] items;
 
 	private void displayTitle(InputOutput io) {
 		io.writeLine(SYMBOL.repeat(N_SYMBOLS));//line of 30 asterisks (SYMBOL="*", N_SYMBOLS=30) 
-		io.writeLine(String.format("%s%s%s", SYMBOL, " ".repeat(N_SYMBOLS / 5), name));
+		io.writeLine(String.format("%s%s%s", SYMBOL, " ".repeat(N_SYMBOLS / 8), name));
 		io.writeLine(SYMBOL.repeat(N_SYMBOLS));
 	}
 
