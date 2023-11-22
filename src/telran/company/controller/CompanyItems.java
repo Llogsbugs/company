@@ -107,7 +107,7 @@ public class CompanyItems {
 		if(company.getEmployee(id) != null) {
 			throw new RuntimeException("Employee with entered id already exists");
 		}
-		String name = io.readPredicate("Enter name", "Wrong name", str -> checkName(str));
+		String name = io.readPredicate("Enter name", "Wrong name: must be not less than 3 letters begining from capital", str -> checkName(str));
 		
 		int salary = io.readInt("Enter salary value", "Wrong salary", MIN_SALARY, MAX_SALARY);
 		String department= io.readOptions("Enter department", "Wrong department", departments);
@@ -115,6 +115,17 @@ public class CompanyItems {
 				getDate(MAX_AGE), getDate(MIN_AGE));
 		Employee empl = new Employee(id, name, salary, department, birthDate);
 		company.hireEmployee(empl );
+	}
+	private static boolean checkName(String str) {
+		boolean res = false;
+		if(str.length() >= 3) {
+			if (Character.isUpperCase(str.charAt(0))) {
+				if(str.substring(1).chars().allMatch(c -> Character.isLowerCase(c))) {
+					res = true;
+				}
+			}
+		}
+		return res;
 	}
 	private static LocalDate getDate(int age) {
 		
