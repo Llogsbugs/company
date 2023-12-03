@@ -12,7 +12,7 @@ import telran.view.StandardInputOutput;
 public class CompanyClientApplication {
 
 	private static final String FILE_NAME = "employees.data";
-	private static final String HOST = "localhost";
+	private static final String HOST = "10.73.140.251";
 	private static final int PORT = 5000;
 	
 	public static void main(String[] args) throws Exception {
@@ -23,7 +23,7 @@ public class CompanyClientApplication {
 		InputOutput io = new StandardInputOutput();
 		Menu menu = new Menu(items, "Company Application");
 		menu.perform(io);
-
+		tcpClient.close();
 	}
 
 }

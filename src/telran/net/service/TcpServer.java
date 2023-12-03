@@ -19,7 +19,8 @@ public TcpServer(int port, ApplProtocol protocol)throws Exception {
 				Socket socket = serverSocket.accept();//once a client sends request for connection
 				//the method accept will return a Socket for the connection
 				TcpSessionHandler sessionHandler = new TcpSessionHandler(socket, protocol);
-				sessionHandler.run();
+				Thread thread = new Thread(sessionHandler);
+				thread.start();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

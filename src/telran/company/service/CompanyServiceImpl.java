@@ -27,7 +27,7 @@ public class CompanyServiceImpl implements CompanyService {
 	 *  the exception IllegalStateException must be thrown
 	 *  returns reference to the being added Employee object
 	 */
-	public Employee hireEmployee(Employee empl) {
+	synchronized public Employee hireEmployee(Employee empl) {
 		long id = empl.id();
 		if(employeesMap.containsKey(id)){
 			throw new IllegalStateException("Employee already exists " + id);
@@ -39,7 +39,7 @@ public class CompanyServiceImpl implements CompanyService {
 		return empl;
 	}
 
-	private void addEmployeeAge(Employee empl) {
+	 private void addEmployeeAge(Employee empl) {
 		LocalDate birthdate = empl.birthDate();
 		Set<Employee> set =
 				employeesAge.computeIfAbsent(birthdate, k -> new HashSet<>());
@@ -72,7 +72,7 @@ public class CompanyServiceImpl implements CompanyService {
 	 * In the case an employee with the given ID doesn't exist 
 	 * the method must throw IllegalStateException
 	 */
-	public Employee fireEmployee(long id) {
+	synchronized public Employee fireEmployee(long id) {
 		Employee empl = employeesMap.remove(id);
 		if(empl == null) {
 			throw new IllegalStateException("Employee not found " + id);
@@ -111,7 +111,7 @@ public class CompanyServiceImpl implements CompanyService {
 	 * in the case employee with the ID doesn't exist
 	 * the method returns null
 	 */
-	public Employee getEmployee(long id) {
+	synchronized public Employee getEmployee(long id) {
 		
 		return employeesMap.get(id);
 	}
@@ -121,7 +121,7 @@ public class CompanyServiceImpl implements CompanyService {
 	 * returns list of employee objects working in a given department
 	 * in the case none employees in the department, the method returns empty list
 	 */
-	public List<Employee> getEmployeesByDepartment(String department) {
+	synchronized public List<Employee> getEmployeesByDepartment(String department) {
 		//in the case no employees in the given department the empty collection should be returned
 		Set<Employee> setEmployeesDep =
 				employeesDepartment.getOrDefault(department, new HashSet<>());
@@ -130,7 +130,7 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	public List<Employee> getAllEmployees() {
+	synchronized public List<Employee> getAllEmployees() {
 		
 		return new ArrayList<>(employeesMap.values());
 	}
@@ -139,12 +139,12 @@ public class CompanyServiceImpl implements CompanyService {
 		return col.stream().flatMap(Collection::stream).toList();
 	}
 	@Override
-	public List<Employee> getEmployeesBySalary(int salaryFrom, int salaryTo) {
+	synchronized public List<Employee> getEmployeesBySalary(int salaryFrom, int salaryTo) {
 		return getEmployeesList(salaryFrom, salaryTo, employeesSalary);
 	}
 
 	@Override
-	public List<Employee> getEmployeeByAge(int ageFrom, int ageTo) {
+	synchronized public List<Employee> getEmployeeByAge(int ageFrom, int ageTo) {
 		LocalDate dateFrom = getBirthDate(ageTo);
 		LocalDate dateTo = getBirthDate(ageFrom);
 		return getEmployeesList(dateFrom, dateTo, employeesAge);
@@ -156,7 +156,7 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	public List<DepartmentAvgSalary> salaryDistributionByDepartments() {
+	synchronized public List<DepartmentAvgSalary> salaryDistributionByDepartments() {
 		Map<String, Double> map = 
 				employeesMap.values().stream()
 				.collect(Collectors.groupingBy(empl -> empl.department()
@@ -169,7 +169,7 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	public List<SalaryIntervalDistribution> getSalaryDistribution(int interval) {
+	synchronized public List<SalaryIntervalDistribution> getSalaryDistribution(int interval) {
 		//key of map is interval number, value is amount of employees falling into that interval
 		Map<Integer, Long> map = employeesMap.values().stream()
 				.collect(Collectors.groupingBy(e -> e.salary() / interval,
@@ -181,7 +181,7 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	public Employee updateDepartment(long id, String newDepartment) {
+	synchronized public Employee updateDepartment(long id, String newDepartment) {
 		Employee empl = fireEmployee(id);
 		Employee newEmployee = new Employee(id, empl.name(), empl.salary(),
 				newDepartment, empl.birthDate());
@@ -190,7 +190,7 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	public Employee updateSalary(long id, int newSalary) {
+	synchronized public Employee updateSalary(long id, int newSalary) {
 		Employee empl = fireEmployee(id);
 		Employee newEmployee = new Employee(id, empl.name(), newSalary,
 				empl.department(), empl.birthDate());
@@ -199,7 +199,7 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	public void save(String filePath) {
+	synchronized public void save(String filePath) {
 		try(ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(filePath))) {
 			output.writeObject(getAllEmployees());
 		} catch (Exception e) {
@@ -211,7 +211,7 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void restore(String filePath) {
+	synchronized public void restore(String filePath) {
 		List<Employee> employees = null;
 		try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(filePath))){
 			employees = (List<Employee>) input.readObject();
